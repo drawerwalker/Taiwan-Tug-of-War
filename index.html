@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>把台灣划離中國</title>
+  <link rel="stylesheet" href="css/style.css">
+  <!-- Firebase App 核心 SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <!-- Firebase Realtime Database SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+</head>
+<body>
+  <div id="game-container">
+    <div id="map-container">
+      <img id="world-map" src="public/world-map.png" alt="世界地圖">
+      <img id="taiwan-boat" src="public/dragon-boat.png" alt="台灣龍舟">
+    </div>
+    <div id="info">點擊地圖任意位置，台灣會朝該方向移動</div>
+  </div>
+
+  <!-- 前端邏輯 -->
+  <script src="js/game.js"></script>
+</body>
+</html>
