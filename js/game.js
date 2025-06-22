@@ -12,7 +12,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const taiwanBoat = document.getElementById('taiwan-boat');
   let isPaddleUp = true;
 
-  // 初始化 Firebase
+  // 根據目前位置自動補上 base path
+  const basePath = window.location.pathname.replace(/\/[^\/]*$/, '');
+
+  // Firebase 設定
   const firebaseConfig = {
     apiKey: "YOUR_API_KEY",
     authDomain: "你的專案.firebaseapp.com",
@@ -59,18 +62,15 @@ document.addEventListener('DOMContentLoaded', () => {
     dirX /= len;
     dirY /= len;
 
-    // 移動百分比（視容器大小自適應）
     taiwanX += dirX * (1 / mapContainer.offsetWidth * 100);
     taiwanY += dirY * (1 / mapContainer.offsetHeight * 100);
     taiwanX = Math.max(0, Math.min(100, taiwanX));
     taiwanY = Math.max(0, Math.min(100, taiwanY));
     updateTaiwanPosition();
 
-    // 槳狀態切換
     isPaddleUp = !isPaddleUp;
-    taiwanBoat.src = isPaddleUp ? 'public/paddle_up.png' : 'public/paddle_down.png';
+    taiwanBoat.src = `${basePath}/public/${isPaddleUp ? 'paddle_up' : 'paddle_down'}.png`;
 
-    // 寫入投票資料
     const votesRef = ref(db, 'votes');
     push(votesRef, {
       dirX,
