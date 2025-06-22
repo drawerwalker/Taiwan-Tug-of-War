@@ -10,7 +10,7 @@ import {
 document.addEventListener('DOMContentLoaded', () => {
   const mapContainer = document.getElementById('map-container');
   const taiwanBoat = document.getElementById('taiwan-boat');
-  let isPaddleUp = true;
+  let ispaddleUp = true;
 
   // 根據目前位置自動補上 base path
   const basePath = window.location.pathname.replace(/\/[^\/]*$/, '');
@@ -68,8 +68,8 @@ document.addEventListener('DOMContentLoaded', () => {
     taiwanY = Math.max(0, Math.min(100, taiwanY));
     updateTaiwanPosition();
 
-    isPaddleUp = !isPaddleUp;
-    taiwanBoat.src = `${basePath}/public/${isPaddleUp ? 'paddle_up' : 'paddle_down'}.png`;
+    ispaddleUp = !ispaddleUp;
+    taiwanBoat.src = `${basePath}/public/${ispaddleUp ? 'paddle_up' : 'paddle_down'}.png`;
 
     const votesRef = ref(db, 'votes');
     push(votesRef, {
