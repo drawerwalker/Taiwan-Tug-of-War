@@ -1,0 +1,38 @@
+body {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f0f0f0;
+}
+
+#game-container {
+  position: relative;
+  text-align: center;
+}
+
+#map-container {
+  position: relative;
+  display: inline-block;
+}
+
+#world-map {
+  max-width: 100%;
+  height: auto;
+}
+
+#taiwan-boat {
+  position: absolute;
+  width: 30px;
+  height: auto;
+  left: 80%;
+  top: 40%;
+  transition: all 0.3s ease;
+}
+
+#info {
+  margin-top: 20px;
+  font-size: 18px;
+}
