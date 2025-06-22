@@ -2,7 +2,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const mapContainer = document.getElementById('map-container');
   const taiwanBoat  = document.getElementById('taiwan-boat');
 
-  // 1. 初始化 Firebase
+  // 槳狀態初始化
+  let isPaddleUp = true;
+
+  // 初始化 Firebase
   const firebaseConfig = {
     apiKey: "YOUR_API_KEY",
     authDomain: "你的專案.firebaseapp.com",
@@ -15,22 +18,23 @@ document.addEventListener('DOMContentLoaded', () => {
   firebase.initializeApp(firebaseConfig);
   const db = firebase.database();
 
-  // 2. 初始位置變數
+  // 初始位置
   let taiwanX = 80, taiwanY = 40;
   function updateTaiwanPosition() {
     taiwanBoat.style.left = taiwanX + '%';
     taiwanBoat.style.top  = taiwanY + '%';
   }
 
-  // 3. 監聽資料庫位置更新
+  // 從 Firebase 取得即時位置
   db.ref('taiwanPosition').on('value', snap => {
     const pos = snap.val();
-    taiwanX = pos.x; taiwanY = pos.y;
+    taiwanX = pos.x;
+    taiwanY = pos.y;
     updateTaiwanPosition();
     console.log('位置更新:', pos);
   });
 
-  // 4. 點擊事件與投票
+  // 點擊地圖 → 切換槳並移動方向
   mapContainer.addEventListener('click', event => {
     const rect = mapContainer.getBoundingClientRect();
     const clickX = event.clientX - rect.left;
@@ -43,20 +47,26 @@ document.addEventListener('DOMContentLoaded', () => {
     let dirX = clickX - centerX, dirY = clickY - centerY;
     const len = Math.hypot(dirX, dirY);
     if (!len) return;
-    dirX /= len; dirY /= len;
+    dirX /= len;
+    dirY /= len;
 
-    // 本地即時回饋
-    taiwanX += dirX*(1/mapContainer.offsetWidth*100);
-    taiwanY += dirY*(1/mapContainer.offsetHeight*100);
+    // 更新本地位置
+    taiwanX += dirX * (1 / mapContainer.offsetWidth * 100);
+    taiwanY += dirY * (1 / mapContainer.offsetHeight * 100);
     taiwanX = Math.max(0, Math.min(100, taiwanX));
     taiwanY = Math.max(0, Math.min(100, taiwanY));
     updateTaiwanPosition();
 
-    // 寫入投票
+    // 切換槳姿勢
+    isPaddleUp = !isPaddleUp;
+    taiwanBoat.src = isPaddleUp ? 'public/paddle_up.png' : 'public/paddle_down.png';
+
+    // 寫入投票方向
     db.ref('votes').push({
       dirX, dirY,
       timestamp: firebase.database.ServerValue.TIMESTAMP
     });
-    console.log('已發送投票:', {dirX, dirY});
+
+    console.log('已發送投票:', { dirX, dirY });
   });
 });
